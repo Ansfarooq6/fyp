@@ -1,0 +1,57 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/navbar.css">
+</head>
+
+<body>
+   <%- include('../includes/mocknav.ejs') %>
+   <main>
+    <div class="form-container">
+      <h1>Add Course</h1>
+      <form action="/admin/add-course" method="POST">
+        <div class="form-control">
+          <label for="courseName">Course Name</label>
+          <input type="text" id="courseName" name="courseName" required>
+        </div>
+        <div class="form-control">
+          <label for="availableSlots">Available Slots</label>
+          <input type="number" id="availableSlots" name="availableSlots" required>
+        </div>
+        <div class="form-control">
+          <label for="availableDays">Available Days (comma separated)</label>
+          <input type="text" id="availableDays" name="availableDays" required>
+        </div>
+        <div class="form-control">
+          <label for="mode">Mode</label>
+          <select id="mode" name="mode" required>
+            <option value="online">Online</option>
+            <option value="physical">Physical</option>
+          </select>
+        </div>
+        <div class="form-control">
+          <label for="courseDuration">Course Duration</label>
+          <input type="text" id="courseDuration" name="courseDuration" required>
+        </div>
+        <div class="form-control">
+          <label for="courseFee">Course Fee</label>
+          <input type="number" id="courseFee" name="courseFee" required>
+        </div>
+        <div class="form-control">
+          <label for="lastDateToApply">Last Date to Apply</label>
+          <input type="date" id="lastDateToApply" name="lastDateToApply" required>
+        </div>
+        <div class="form-control">
+          <label for="courseDescription">Course Description</label>
+          <textarea id="courseDescription" name="courseDescription" rows="5" required></textarea>
+        </div>
+        <div class="form-actions">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="btn" type="submit">Add Course</button>
+        </div>
+      </form>
+    </div>
+  </main>
+   <%- include('../includes/end.ejs') %>
+</body> 
+</html>

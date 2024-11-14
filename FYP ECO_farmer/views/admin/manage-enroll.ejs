@@ -1,0 +1,146 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/enrollments.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: green; /* Green color for the header */
+        font-size: 2em;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        overflow-x: auto; /* Horizontal scroll on smaller screens */
+        display: block;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #4CAF50; /* Green background for the header */
+        color: white;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+        background-color: #eafaf1;
+    }
+
+    @media (max-width: 768px) {
+        th, td {
+            padding: 8px; /* Adjust padding for smaller screens */
+            font-size: 0.9em; /* Adjust font size for smaller screens */
+        }
+
+        h1 {
+            font-size: 1.5em; /* Adjust font size for smaller screens */
+        }
+
+        table {
+            border: 0;
+        }
+
+        table thead {
+            display: none;
+        }
+
+        table, table tbody, table tr, table td {
+            display: block;
+            width: 100%;
+        }
+
+        table tr {
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+            display: block;
+        }
+
+        table td {
+            text-align: right;
+            padding-left: 50%;
+            position: relative;
+        }
+
+        table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 10px;
+            width: calc(50% - 20px);
+            padding-right: 10px;
+            text-align: left;
+            font-weight: bold;
+            color: green;
+        }
+    }
+</style>
+</head>
+
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+
+    <main>
+        <h1>Course Enrollments</h1>
+        <% if (enrollments.length === 0) { %>
+            <p>No enrollments available at the moment.</p>
+        <% } else { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Mode</th>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>User Email</th>
+                        <th>Phone Number</th>
+                        <th>Enrollment Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% enrollments.forEach(enrollment => { %>
+                        <tr>
+                            <td data-label="Course ID"><%= enrollment.courseId._id %></td>
+                            <td data-label="Course Name"><%= enrollment.courseId.courseName %></td>
+                            <td data-label="Mode"><%= enrollment.courseId.mode %></td>
+                            <td data-label="User ID"><%= enrollment.userId._id %></td>
+                            <td data-label="Username"><%= enrollment.userId.username %></td>
+                            <td data-label="User Email"><%= enrollment.userId.email %></td>
+                            <td data-label="Phone Number"><%= enrollment.userId.customerDetails.phoneNumber %></td>
+                            <td data-label="Enrollment Date"><%= enrollment.enrollmentDate.toISOString().split('T')[0] %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </main>
+
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

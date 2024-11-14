@@ -1,0 +1,56 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+  <%- include('../includes/mocknav.ejs') %>
+
+  <main>
+    <h1>Vegetable Page</h1>
+
+    <% if (vegetables.length > 0) { %>
+      <div class="top-products">
+        <div class="products">
+          <% vegetables.forEach((vegetable) => { %>
+            <div class="product">
+              <img src="<%= vegetable.imageUrl %>" alt="<%= vegetable.title %>">
+              <h4><%= vegetable.title %></h4>
+              <p class="farmer-name">Farmer: 
+                <a href="/farmer/<%= vegetable.userId && vegetable.userId.username ? encodeURIComponent(vegetable.userId.username) : 'Unknown' %>">
+                  <%= vegetable.userId && vegetable.userId.username ? vegetable.userId.username : 'Unknown' %>
+                </a>
+              </p>
+              <div class="price">
+                <p>$<%= vegetable.price %></p>
+                <% if (isAuthenticated) { %>
+                  <%- include('../includes/add-to-cart.ejs', { product: vegetable }) %>
+                <% } else { %>
+                  <i class="fa-solid fa-cart-plus"></i>
+                <% } %>
+              </div>
+              <p class="product__description"><%= vegetable.description %></p>
+              <a href="/products/<%= vegetable._id %>" class="btn">Details</a>
+            </div>
+          <% }) %>
+        </div>
+        <div class="btns">
+          <%- include('../includes/pagination.ejs', {
+            currentPage: currentPage,
+            nextPage: nextPage,
+            previousPage: previousPage,
+            lastPage: lastPage,
+            hasNextPage: hasNextPage,
+            hasPreviousPage: hasPreviousPage
+          }) %>
+        </div>
+      </div>
+    <% } else { %>
+      <h3>No vegetable products found.</h3>
+    <% } %>
+  </main>
+
+  <%- include('../includes/end.ejs') %>
+</body>
+</html>

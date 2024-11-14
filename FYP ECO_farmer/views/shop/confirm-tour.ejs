@@ -1,0 +1,68 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/tour.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<!-- Additional CSS or scripts as needed -->
+
+</head>
+
+
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+    <main class="form-container">
+        <h1>Confirm Tour</h1>
+        
+        <section id="tour-details" class="section tour-section">
+            <div class="container">
+                <h2>Tour Details</h2>
+                <div class="tour-item">
+                    <h3 id="tour-title"><%= tour.title %></h3>
+                    <p id="tour-description"><%= tour.description %></p>
+                    <p><strong><i class="fas fa-map-marker-alt"></i> Location:</strong> <span id="tour-location"><%= tour.location %></span></p>
+                    <p><strong><i class="fas fa-clock"></i> Duration:</strong> <span id="tour-duration"><%= tour.duration %></span> minutes</p>
+                    <p><strong><i class="fas fa-users"></i> Max Participants:</strong> <span id="tour-participants"><%= tour.maxParticipants %></span></p>
+                    <p><strong><i class="fas fa-dollar-sign"></i> Price:</strong> $<span id="tour-price"><%= tour.price.toFixed(2) %></span></p>
+                    <p><strong><i class="fas fa-calendar-alt"></i> Date:</strong> <span id="tour-date"><%= tour.date.toISOString().split('T')[0] %></span></p>
+                </div>
+            </div>
+        </section>
+        
+        <form class="tour-form" action="/confirm-tour/<%= tour._id %>" method="POST">
+            <!-- Select Date (as single available date) -->
+            <div class="form-control">
+                <label for="date">Available Date</label>
+                <select id="date" name="date" required>
+                    <option value="<%= tour.date.toISOString().split('T')[0] %>"><%= tour.date.toISOString().split('T')[0] %></option>
+                </select>
+            </div>
+    
+            <!-- Select Slot -->
+            <div class="form-control">
+                <label for="slot">Select Slot</label>
+                <select id="slot" name="slot" required>
+                    <option value="">Select Slot</option>
+                    <% if (tour.slots && tour.slots.length > 0) { %>
+                        <% tour.slots.forEach(slot => { %>
+                            <option value="<%= slot %>"><%= slot %></option>
+                        <% }) %>
+                    <% } else { %>
+                        <option value="">No slots available</option>
+                    <% } %>
+                </select>
+            </div>
+    
+            <!-- Number of Participants -->
+            <div class="form-control">
+                <label for="participants">Number of Participants</label>
+                <input type="number" id="participants" name="participants" min="1" max="<%= tour.maxParticipants %>" required>
+            </div>
+    
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit">Confirm Tour</button>
+        </form>
+    </main>
+    
+
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

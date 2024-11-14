@@ -1,0 +1,90 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/course.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<style>
+    .outer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.enrollment-details {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.enrollment-details h2 {
+    margin-bottom: 10px;
+}
+
+.enrollment-details p {
+    margin: 5px 0;
+}
+
+.payment-status {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.payment-status h2 {
+    margin-bottom: 10px;
+}
+
+.success {
+    color: green;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+
+    <div class="outer">
+        <h1>Enrollment Confirmation</h1>
+        <p>Thank you for enrolling in the course. Here are your enrollment details:</p>
+    </div>
+
+    <main class="main">
+        <div class="enrollment-details">
+            <h2>Course Details</h2>
+            <p><strong>Course Name:</strong> <%= course.courseName %></p>
+            <p><strong>Mode:</strong> <%= course.mode %></p>
+            <p><strong>Course Duration:</strong> <%= course.courseDuration %> months</p>
+            <p><strong>Course Fee:</strong> $<%= course.courseFee %></p>
+            <p><strong>Available Days:</strong> <%= course.availableDays %></p>
+            <p><strong>Available Slots:</strong> <%= course.availableSlots %></p>
+            <p><strong>Last Date to Apply:</strong> <%= course.lastDateToApply ? course.lastDateToApply.toISOString().split('T')[0] : 'N/A' %></p>
+        </div>
+        <div class="payment-status">
+            <h2>Payment Status</h2>
+            <% if (paymentStatus === 'paid') { %>
+                <p class="success">Payment Successful</p>
+            <% } else { %>
+                <p class="error">Payment Failed</p>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

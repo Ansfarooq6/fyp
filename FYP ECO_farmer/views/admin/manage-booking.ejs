@@ -1,0 +1,144 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<style>
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9fafb;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Main Title */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Bookings Section */
+.bookings-section {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+thead {
+    background-color: #27ae60;
+    color: #fff;
+}
+
+thead th {
+    padding: 10px;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+tbody td {
+    padding: 10px;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+tbody td button.verify-btn {
+    padding: 5px 10px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #27ae60;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+tbody td button.verify-btn:hover {
+    background-color: #219150;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    thead th, tbody td {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}
+</style>
+</head>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+
+    <main class="container">
+        <h1>Farmer Bookings</h1>
+        <% if (bookings.length === 0) { %>
+            <p>No bookings available at the moment.</p>
+        <% } else { %>
+            <div class="bookings-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tour Title</th>
+                            <th>Booking Date</th>
+                            <th>Slot</th>
+                            <th>Participants</th>
+                            <th>Total Price</th>
+                            <th>Visitor Name</th>
+                            <th>Visitor Phone</th>
+                            <th>Visitor Email</th>
+                            <th>Verify Visit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% bookings.forEach(booking => { %>
+                            <tr>
+                                <td><%= booking.tour.title %></td>
+                                <td><%= new Date(booking.date).toISOString().split('T')[0] %></td>
+                                <td><%= booking.slot %></td>
+                                <td><%= booking.participants %></td>
+                                <td>$<%= booking.totalPrice.toFixed(2) %></td>
+                                <td><%= booking.user.username%></td>
+                                <td><%= booking.user.customerDetails.phoneNumber %></td>
+                                <td><%= booking.user.email %></td>
+                                <td><button class="verify-btn">Verify Visit</button></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </main>
+
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

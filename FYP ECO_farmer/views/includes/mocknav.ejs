@@ -1,0 +1,72 @@
+<header>
+<nav>
+    <ul>
+        <li> 
+            <a href="/">Products</a>
+        </li>
+        <li> 
+            <a href="/products">Fruits</a>
+        </li>
+        <li>
+             <a href="/vegetable">Vegetables</a>
+            </li>
+        <li class="main-header__item dropdown">
+            <a class="dropdown-toggle <%= (path === '/farm-tours' || path === '/courses') ? 'active' : '' %>" href="#" id="farmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Avtivites
+            </a>
+            <div class="dropdown-menu" aria-labelledby="farmDropdown">
+              <a class="dropdown-item <%= path === '/farm-tours' ? 'active' : '' %>" href="/tours">Farm Tours</a>
+              <a class="dropdown-item <%= path === '/courses' ? 'active' : '' %>" href="/course">Courses</a>
+            </div>
+          </li>
+        <% if(isAuthenticated){ %>
+        <li> 
+            <a href="/cart">cart</a>
+        </li>
+        <li class="main-header__item dropdown">
+            <a class="dropdown-toggle<%= path.startsWith('/orders') ? 'active' : '' %>" href="#">Orders</a>
+            <ul class="dropdown-content">
+                <li><a class="<%= path === '/orders/food' ? 'active' : '' %>" href="/orders">Food Order</a></li>
+                <li><a class="<%= path === '/orders/bookings' ? 'active' : '' %>" href="/orders/bookings">Bookings</a></li>
+                <li><a class="<%= path === '/orders/enrollment' ? 'active' : '' %>" href="/orders/enrollment">Enrollment</a></li>
+            </ul>
+        </li>
+        
+         <% if(role === 'farmer') { %>
+        
+         <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle">Farmer Dhasboard
+            </a>
+            <ul class="dropdown-menu">
+              <li class="mt"><a href="/admin/add-product">AddProduct</a></li>
+              <li class="mt"><a href="/admin/products">Admin Products</a></li>
+              <li class="mt"><a href="/admin/Tour">Admin Tours</a></li>
+              <li class="mt"><a href="/admin/Course">Admincourse</a></li>
+              <li class="mt"><a href="/admin/addtours">Add tours</a></li>
+              <li class="mt"><a href="/admin/courses">AddCourses</a></li>
+              <li class="mt"><a href="/admin/orders">manage orders</a></li>
+              <li class="mt"><a href="/admin/managebooking">manage Booking</a></li>
+              <li class="mt"><a href="/admin/manageenrollments">manage Enrollments</a></li>
+            </ul>
+          </li>
+          <% } %>
+          <% } %>
+          <% if(!isAuthenticated){ %>
+          <ul class="">
+            <div class="logs">
+                <li><a href="/login">Login</a></li>
+                <li><a href="/signup">signup</a></li>
+            </div>
+            <% } else { %>
+                <li>
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <button type="submit">Logout</button>
+                </form>
+                </li>
+                <% } %>
+          </ul>
+     
+    </ul>
+</nav>
+</header>

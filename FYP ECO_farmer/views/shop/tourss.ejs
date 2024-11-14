@@ -1,0 +1,89 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/tour.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="css/navbar.css">
+
+
+</head>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+    <header class="header">
+        <div class="container">
+            <h1>Join Our Farm Tour Services</h1>
+            <p>Experience the beauty and tranquility of our farm</p>
+        </div>
+    </header>
+
+    <section id="gallery" class="section gallery-section">
+        <div class="container">
+            <h2>Farm-Gallery</h2>
+            <div class="gallery-grid">
+                <img src="https://images.unsplash.com/photo-1521378585384-e6a621860c47?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8" alt="Farm Image 1">
+                <img src="https://images.unsplash.com/photo-1441749074938-1c6782303919?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D" alt="Farm Image 2">
+                <img src="https://images.unsplash.com/photo-1497122123454-d63853ca2d39?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0fHx8ZW58MHx8fHx8" alt="Farm Image 3">
+                <img src="https://images.unsplash.com/photo-1521378585384-e6a621860c47?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8" alt="Farm Image 4">
+            </div>
+        </div>
+    </section>
+    
+    <section id="new-tour-item" class="section tour-section">
+        <div class="container">
+            <h2>New Tour Item</h2>
+            <% if (tours.length === 0) { %>
+                <p>No tours available at the moment.</p>
+            <% } else { %>
+                <ul class="tour-list">
+                    <% tours.forEach(tour => { %>
+                        <div class="tour-item">
+                            <h3 id="tour-title"><%= tour.title %></h3>
+                            <p id="tour-description"><%= tour.description %></p>
+                            <p><strong><i class="fas fa-map-marker-alt"></i> Location:</strong> <span id="tour-location"><%= tour.location %></span></p>
+                            <p><strong><i class="fas fa-clock"></i> Duration:</strong> <span id="tour-duration"><%= tour.duration %></span> minutes</p>
+                            <p><strong><i class="fas fa-users"></i> Participants:</strong> <span id="tour-participants"><%= tour.maxParticipants %></span></p>
+                            <p><strong><i class="fas fa-dollar-sign"></i> Price:</strong> $<span id="tour-price"><%= tour.price.toFixed(2) %></span></p>
+                            <p><strong><i class="fas fa-calendar-alt"></i> Date:</strong> <span id="tour-date"><%= tour.date.toISOString().split('T')[0] %></span></p>
+                            <p><strong><i class="fas fa-users"></i> farmer:</strong> <span id="creator"><%= tour.userId %>p</span></p>
+                            <button class="confirm-btn"><a href="/confirm-tour/<%= tour._id %>">Confirm Tour</a></button>
+                        </div>
+                    <% }) %>
+                </ul>
+            <% } %>
+        </div>
+    </section>
+    
+
+
+    <section id="tour" class="section tour-section">
+        <div class="container">
+            <h2>Farm Tour</h2>
+            <p>Join us for a guided tour of our farm. Explore the fields, meet the animals, and see how we grow our crops.</p>
+            <div class="cards">
+                <div class="card">
+                    <i class="fas fa-user-friends fa-3x" style="color: #2ecc71;"></i>
+                    <h3>Meet the Farmers</h3>
+                    <p>Get to know the people who make it all happen.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-paw fa-3x" style="color: #2ecc71;"></i>
+                    <h3>Animal Interaction</h3>
+                    <p>Spend time with our friendly farm animals.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-seedling fa-3x" style="color: #2ecc71;"></i>
+                    <h3>Crop Fields</h3>
+                    <p>Walk through our lush crop fields.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-leaf fa-3x" style="color: #2ecc71;"></i>
+                    <h3>Organic Farming Practices</h3>
+                    <p>Learn about our sustainable and organic methods.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

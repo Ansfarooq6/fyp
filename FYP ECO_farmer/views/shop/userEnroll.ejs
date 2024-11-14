@@ -1,0 +1,86 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/enrollments.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<style>
+    body {
+    font-family: Arial, sans-serif;
+}
+
+main {
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+</style>
+</head>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+
+    <main>
+        <h1>Your Enrollments</h1>
+        <p>You are enrolled in <%= courseCount %> course(s).</p>
+
+        <% if (courses.length === 0) { %>
+            <p>No enrollments available at the moment.</p>
+        <% } else { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Mode</th>
+                        <th>Enrollment Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% courses.forEach(course => { %>
+                        <tr>
+                            <td><%= course.courseId %></td>
+                            <td><%= course.courseName %></td>
+                            <td><%= course.mode %></td>
+                            <td><%= course.enrollmentDate %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </main>
+
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/cart.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+    /* main.css */
+
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif; /* Change font family as needed */
+    background-color: #f9f9f9; /* Light background color */
+}
+
+.centered {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #45a049; /* Darker shade of green */
+}
+
+/* Centered content */
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .centered {
+        width: 90%;
+        margin: 1rem auto;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.5rem;
+    }
+}
+
+</style>
+</head>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+    <main>
+        <div class="centered">
+            <h1>Course Checkout</h1>
+            <h2><%= course.courseName %></h2>
+            <p>Mode: <%= course.mode %></p>
+            <p>Course Duration: <%= course.courseDuration %> months</p>
+            <p>Course Fee: $<%= course.courseFee %></p>
+        </div>
+        <div class="centered">
+            <button class="btn" id="orderBtn">Pay Now</button>
+        </div>
+    </main>
+    <%- include('../includes/end.ejs') %>
+
+    <script>
+        var stripe = Stripe('pk_test_51PICjRG6Qc0pxCXDlsdueXMRwxcV4oUJBe2LXEGvSUBQrNnAsyNYH47y1th9kCnfzcpuRjvy7pVj5oV8m1WYNPpQ00zY8iRiWa');
+        var orderBtn = document.getElementById('orderBtn');
+        
+        orderBtn.addEventListener('click', function() {
+            stripe.redirectToCheckout({
+                sessionId: '<%= sessionId %>'
+            }).then(function (result) {
+                if (result.error) {
+                    
+                    alert(result.error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

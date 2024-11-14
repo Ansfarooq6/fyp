@@ -1,0 +1,92 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+  <%- include('../includes/navigation.ejs') %>
+
+  <main>
+    <% if (errormsg) { %>
+    <div class="user-message user-message--error"><%= errormsg %></div>
+    <% } %>
+    <form class="login-form" action="/signup" method="POST">
+      <div class="form-control">
+        <label for="username">Username</label>
+        <input class="<%= validationErrors.find(e => e.param === 'username') ? 'invalid' : '' %>" type="text" name="username" id="username" value="<%= oldInputs.username %>">
+      </div>
+      <div class="form-control">
+        <label for="email">E-Mail</label>
+        <input class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>" type="email" name="email" id="email" value="<%= oldInputs.email %>">
+      </div>
+      <div class="form-control">
+        <label for="password">Password</label>
+        <input class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" type="password" name="password" id="password" value="<%= oldInputs.password %>">
+      </div>
+      <div class="form-control">
+        <label for="confirmPassword">Confirm Password</label>
+        <input class="<%= validationErrors.find(e => e.param === 'confirmPassword') ? 'invalid' : '' %>" type="password" name="confirmPassword" id="confirmPassword" value="<%= oldInputs.confirmPassword %>">
+      </div>
+      <div class="form-control">
+        <label for="role">Role:</label>
+        <select name="role" id="role" required onchange="toggleFields()">
+          <option value="farmer">Farmer</option>
+          <option value="customer">Customer</option>
+        </select>
+      </div>
+      <div id="farmer-fields" style="display: none;">
+        <div class="form-control">
+          <label for="farmName">Farm Name</label>
+          <input type="text" name="farmName" id="farmName" value="<%= oldInputs.farmName %>">
+        </div>
+        <div class="form-control">
+          <label for="farmLocation">Farm Location</label>
+          <input type="text" name="farmLocation" id="farmLocation" value="<%= oldInputs.farmLocation %>">
+        </div>
+        <div class="form-control">
+          <label for="farmDescription">Farm Description</label>
+          <textarea name="farmDescription" id="farmDescription"><%= oldInputs.farmDescription %></textarea>
+        </div>
+      </div>
+      <div id="customer-fields" style="display: none;">
+        <div class="form-control">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="text" name="phoneNumber" id="phoneNumber" value="<%= oldInputs.phoneNumber %>">
+        </div>
+        <div class="form-control">
+          <label for="address">Address</label>
+          <textarea name="address" id="address"><%= oldInputs.address %></textarea>
+        </div>
+      </div>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn" type="submit">Sign Up</button>
+    </form>
+  </main>
+
+  <%- include('../includes/end.ejs') %>
+
+  <script>
+    function toggleFields() {
+      const role = document.getElementById('role').value;
+      const farmerFields = document.getElementById('farmer-fields');
+      const customerFields = document.getElementById('customer-fields');
+      if (role === 'farmer') {
+        farmerFields.style.display = 'block';
+        customerFields.style.display = 'none';
+      } else if (role === 'customer') {
+        farmerFields.style.display = 'none';
+        customerFields.style.display = 'block';
+      } else {
+        farmerFields.style.display = 'none';
+        customerFields.style.display = 'none';
+      }
+    }
+
+    // Initialize visibility on page load based on the current role selection
+    document.addEventListener('DOMContentLoaded', (event) => {
+      toggleFields();
+    });
+  </script>
+
+</body>
+</html>

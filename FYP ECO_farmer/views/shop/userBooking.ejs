@@ -1,0 +1,121 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<link rel="stylesheet" href="/css/userBooking.css"> <!-- Custom CSS for userBooking page -->
+</head>
+<style>
+/* userBooking.css */
+
+.user-booking-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: green;
+}
+
+.no-bookings {
+  text-align: center;
+  font-style: italic;
+  color: green;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 4px 15px rgba(131, 252, 70, 0.1);
+}
+
+.booking-table th,
+.booking-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.booking-table th {
+  background-color: #f2f2f2;
+  font-size: 16px;
+  color: #555;
+}
+
+.booking-table td {
+  background-color: #fff;
+  font-size: 14px;
+  color:green;
+}
+
+.booking-table td[colspan="4"] {
+  text-align: center;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .user-booking-container {
+    padding: 10px;
+  }
+
+  .booking-table {
+    font-size: 12px;
+  }
+}
+</style>
+<body>
+  <%- include('../includes/mocknav.ejs') %>
+
+  <main class="user-booking-container">
+    <h1 class="page-title">Your Farm Tour Bookings</h1>
+    <% if (bookings.length === 0) { %>
+    <p class="no-bookings">No bookings available.</p>
+    <% } else { %>
+    <table class="booking-table">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Tour ID</th>
+          <th>Tour Title</th>
+          <th>Tour Location</th>
+          <th>Tour Date</th>
+          <th>Tour Day</th>
+          <th>Participants</th>
+          <th>Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% bookings.forEach(booking => { %>
+        <tr>
+          <td><%= booking._id %></td>
+          <% if (booking.tour) { %>
+          <td><%= booking.tour._id %></td>
+          <td><%= booking.tour.title %></td>
+          <td><%= booking.tour.location %></td>
+          <td><%= new Date(booking.tour.date).toLocaleDateString() %></td>
+          <td><%= new Date(booking.tour.date).toLocaleDateString('en-US', { weekday: 'long' }) %></td>
+          <% } else { %>
+          <td colspan="5">Tour data not available</td>
+          <% } %>
+          <td><%= booking.participants %></td>
+          <td>$<%= booking.totalPrice %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% } %>
+  </main>
+
+  <%- include('../includes/end.ejs') %>
+</body>
+</html>

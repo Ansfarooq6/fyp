@@ -1,0 +1,98 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/course.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<style>
+    /* course.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+}
+
+.coursecart-container {
+    width: 80%;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-details {
+    margin-bottom: 2rem;
+}
+
+.course-details h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.course-info {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-info p {
+    margin-bottom: 0.5rem;
+}
+
+.btn {
+    padding: 0.8rem 2rem;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    .coursecart-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+}
+
+</style>
+</head>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+
+    <main class="course-cart-container">
+        <div class="course-details">
+            <h1>Course Details</h1>
+            <div class="course-info">
+                <input type="hidden" name="<%= course._id  %>">
+                <input type="hidden" name="<%= course.mode  %>">
+                <p><strong>Course Name:</strong> <%= course.courseName %></p>
+                <p><strong>Mode:</strong> <%= course.mode %></p>
+                <p><strong>Course Duration:</strong> <%= course.courseDuration %> months</p>
+                <p><strong>Course Fee:</strong> $<%= course.courseFee %></p>
+            </div>
+        </div>
+        
+            <input type="hidden" name="courseId" value="<%= course._id %>">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <a  class="btn" href="/enroll-course/<%= course._id  %>">Enroll Now</a>
+        
+    </main>
+
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

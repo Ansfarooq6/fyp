@@ -1,0 +1,115 @@
+<div class="backdrop"></div>
+<header class="main-header">
+  <button id="side-menu-toggle">Menu</button>
+  <nav class="main-header__nav">
+    <ul class="main-header__item-list">
+      <li class="main-header__item">
+        <a class="<%= path === '/' ? 'active' : '' %>" href="/">Products</a>
+      </li>
+      <li class="main-header__item">
+        <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Fruits</a>
+      </li>
+      <li class="main-header__item">
+        <a class="<%= path === '/vegetable' ? 'active' : '' %>" href="/vegetable">Vegetables</a>
+      </li>
+      <li class="main-header__item">
+        <a href="/farmer">Farmers</a>
+      </li>
+      <li class="main-header__item dropdown">
+        <a class="dropdown-toggle <%= (path === '/farm-tours' || path === '/courses') ? 'active' : '' %>" href="#" id="farmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Activities
+        </a>
+        <div class="dropdown-menu" aria-labelledby="farmDropdown">
+          <a class="dropdown-item <%= path === '/farm-tours' ? 'active' : '' %>" href="/tours">Farm Tours</a>
+          <a class="dropdown-item <%= path === '/courses' ? 'active' : '' %>" href="/course">Courses</a>
+        </div>
+      </li>
+      <% if(isAuthenticated){ %>
+      <li class="main-header__item">
+        <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
+      </li>
+      <li class="main-header__item dropdown">
+        <a class="dropdown-toggle<%= path.startsWith('/orders') ? 'active' : '' %>" href="#">Orders</a>
+        <ul class="dropdown-content">
+            <li><a class="<%= path === '/orders/food' ? 'active' : '' %>" href="/orders">Food Order</a></li>
+            <li><a class="<%= path === '/orders/bookings' ? 'active' : '' %>" href="/orders/bookings">Bookings</a></li>
+            <li><a class="<%= path === '/orders/enrollment' ? 'active' : '' %>" href="/orders/enrollment">Enrollment</a></li>
+        </ul>
+    </li>
+    
+      <% if(role === 'farmer') { %>
+      <li class="main-header__item dropdown">
+        <a class="dropdown-toggle <%= path.startsWith('/admin') ? 'active' : '' %>" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          farmer Dashboard
+        </a>
+        <div class="dropdown-menu" aria-labelledby="adminDropdown">
+          <a class="dropdown-item <%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product</a>
+          <a class="dropdown-item <%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products</a>
+          <a class="dropdown-item <%= path === '/admin/products' ? 'active' : '' %>" href="/admin/Tour">Admin Tour</a>
+          <a class="dropdown-item <%= path === '/admin/products' ? 'active' : '' %>" href="/admin/Course">Admin Course</a>
+          <a class="dropdown-item <%= path === '/admin/courses' ? 'active' : '' %>" href="/admin/courses">AddCourses</a>
+          <a class="dropdown-item <%= path === '/admin/tours' ? 'active' : '' %>" href="/admin/addtours">AddTours</a>
+          <a class="dropdown-item <%= path === '/admin/orders' ? 'active' : '' %>" href="/admin/orders">MangeOrders</a>
+          <a class="dropdown-item <%= path === '/admin/orders' ? 'active' : '' %>" href="/admin/managebooking">Mange Booking</a>
+          <a class="dropdown-item <%= path === '/admin/orders' ? 'active' : '' %>" href="/admin/manageenrollments">Manage Enr</a>
+          
+
+        </div>
+      </li>
+      <% } %>
+      <% } %>
+    </ul>
+    <% if(!isAuthenticated){ %>
+    <ul class="main-header__item-list">
+      <li class="main-header__item">
+        <a href="/login">Login</a>
+      </li>
+      <li class="main-header__item">
+        <a class="<%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
+      </li>
+    <% } else { %>
+      <li class="main-header__item">
+        <form action="/logout" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit">Logout</button>
+        </form>
+      </li>
+    <% } %>
+
+    </ul>
+  </nav>
+</header>
+
+<nav class="mobile-nav">
+  <ul class="mobile-nav__item-list">
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shops</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
+    </li>
+    <% if(role === 'farmer') { %>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/admin/courses' ? 'active' : '' %>" href="/admin/courses">Courses</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/admin/tours' ? 'active' : '' %>" href="/admin/tours">Tours</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/admin/orders' ? 'active' : '' %>" href="/admin/orders">Orders</a>
+    </li>
+    <% } %>
+  </ul>
+</nav>

@@ -1,0 +1,72 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/profie.css">
+<link rel="stylesheet" href="/css/navbar.css">
+</head>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+    <div class="container">
+        <div class="header">
+            <img src="<%= farmer.profilePicture || 'default-image-url' %>" alt="Farmer Photo" width="150" height="150">
+            <div>
+                <h1><%= farmer.username %></h1>
+                <p>Farmer ID: <%= farmer._id %></p>
+                <p>Location: <%= farmer.farmLocation %></p>
+            </div>
+        </div>
+        <div class="section">
+            <h2>Contact Information</h2>
+            <p>Email: <%= farmer.email %></p>
+        </div>
+        <div class="section">
+            <h2>Farm Details</h2>
+            <p>Farm Name: <%= farmer.farmName %></p>
+            <p>Farm Location: <%= farmer.farmLocation %></p>
+            <p>Farm Description: <%= farmer.farmDescription %></p>
+        </div>
+        <div class="section">
+            <h2>Products</h2>
+            <ul>
+                <% products.forEach(product => { %>
+                    <li><%= product.title %> - $<%= product.price %></li>
+                <% }) %>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Courses</h2>
+            <ul>
+                <% (farmer.courses || []).forEach(course => { %>
+                    <li><%= course %></li>
+                <% }) %>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Farm Tours</h2>
+            <ul>
+                <% (farmer.farmTours || []).forEach(tour => { %>
+                    <li><%= tour %></li>
+                <% }) %>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Certifications</h2>
+            <ul>
+                <% (farmer.certifications || []).forEach(certification => { %>
+                    <li><%= certification %></li>
+                <% }) %>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Reviews</h2>
+            <div class="review">
+                <p class="reviewer">Jane Smith</p>
+                <p>John's farm products are always fresh and of the highest quality. Highly recommend!</p>
+            </div>
+            <div class="review">
+                <p class="reviewer">Michael Brown</p>
+                <p>Excellent customer service and top-notch products. Will buy again!</p>
+            </div>
+        </div>
+    </div>
+<%- include('../includes/end.ejs') %>
+</body>
+</html>

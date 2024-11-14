@@ -1,0 +1,66 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/navbar.css">
+</head>
+
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+
+    <main class="form-container">
+        <h1><% if (editing) { %>Edit Farm Tour<% } else { %>Add Farm Tour<% } %></h1>
+        <% if (errorMessage && errorMessage.length > 0) { %>
+            <div class="user-message user-message--error">
+                <% errorMessage.forEach(error => { %>
+                    <p><%= error.msg %></p>
+                <% }) %>
+            </div>
+        <% } %>
+        
+        <form class="farm-tour-form" action="/admin/<% if (editing) { %>edit-tour/<%= tour._id %><% } else { %>addtours<% } %>" method="POST">
+            <% if (editing) { %>
+                <input type="hidden" value="<%= tour._id %>" name="tourId">
+            <% } %>
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="<%= editing ? tour.title : oldInput.title %>" required>
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" required><%= editing ? tour.description : oldInput.description %></textarea>
+            </div>
+            <div class="form-control">
+                <label for="highlights">Highlights (comma-separated)</label>
+                <input type="text" id="highlights" name="highlights" value="<%= editing ? tour.highlights.join(', ') : oldInput.highlights %>" required>
+            </div>
+            <div class="form-control">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" value="<%= editing ? tour.date.toISOString().split('T')[0] : oldInput.date %>" required>
+            </div>
+            <div class="form-control">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" value="<%= editing ? tour.location : oldInput.location %>" required>
+            </div>
+            <div class="form-control">
+                <label for="duration">Duration (minutes)</label>
+                <input type="number" id="duration" name="duration" value="<%= editing ? tour.duration : oldInput.duration %>" required>
+            </div>
+            <div class="form-control">
+                <label for="maxParticipants">Max Participants</label>
+                <input type="number" id="maxParticipants" name="maxParticipants" value="<%= editing ? tour.maxParticipants : oldInput.maxParticipants %>" required>
+            </div>
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" value="<%= editing ? tour.price : oldInput.price %>" required>
+            </div>
+            <div class="form-control">
+                <label for="slots">Available Slots (comma-separated)</label>
+                <input type="text" id="slots" name="slots" value="<%= editing ? tour.slots.join(', ') : oldInput.slots %>" required>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn" type="submit"><% if (editing) { %>Update Farm Tour<% } else { %>Add Farm Tour<% } %></button>
+        </form>
+    </main>
+
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

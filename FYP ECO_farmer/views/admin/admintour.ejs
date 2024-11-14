@@ -1,0 +1,42 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/tour.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</header>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+    
+    <section id="new-tour-item" class="section tour-section">
+        <div class="container">
+            <h2>Admin Tours</h2>
+            <% if (tours.length === 0) { %>
+                <p>No tours available at the moment.</p>
+            <% } else { %>
+                <ul class="tour-list">
+                    <% tours.forEach(tour => { %>
+                        <div class="tour-item">
+                            <h3 id="tour-title"><%= tour.title %></h3>
+                            <p id="tour-description"><%= tour.description %></p>
+                            <p><strong><i class="fas fa-map-marker-alt"></i> Location:</strong> <span id="tour-location"><%= tour.location %></span></p>
+                            <p><strong><i class="fas fa-clock"></i> Duration:</strong> <span id="tour-duration"><%= tour.duration %></span> minutes</p>
+                            <p><strong><i class="fas fa-users"></i> Participants:</strong> <span id="tour-participants"><%= tour.maxParticipants %></span></p>
+                            <p><strong><i class="fas fa-dollar-sign"></i> Price:</strong> $<span id="tour-price"><%= tour.price.toFixed(2) %></span></p>
+                            <p><strong><i class="fas fa-calendar-alt"></i> Date:</strong> <span id="tour-date"><%= tour.date.toISOString().split('T')[0] %></span></p>
+                        </div>
+                        <div class="card__actions">
+                            <a href="/admin/edit-tour/<%= tour._id %>?edit=true" class="btn">Edit</a>
+                            <form action="/admin/delete-tour" method="POST" style="display: inline;">
+                                <input type="hidden" name="tourId" value="<%= tour._id %>">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <button type="submit" class="btn">Delete Tour</button>
+                            </form>
+                            </div>
+                    <% }) %>
+                </ul>
+            <% } %>
+        </div>
+    </section>
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

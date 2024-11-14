@@ -1,0 +1,55 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/navbar.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+  <%- include('../includes/newnav') %>
+
+  <main>
+    <% if (prods.length > 0) { %>
+      <div class="top-products">
+        <div class="products">
+          <% for (let product of prods) { %>
+            <div class="product">
+              <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+              <h4><%= product.title %></h4>
+              <p class="farmer-name">Farmer: 
+                <a href="/farmer/<%= product.userId && product.userId.username ? encodeURIComponent(product.userId.username) : 'Unknown' %>">
+                  <%= product.userId && product.userId.username ? product.userId.username : 'Unknown' %>
+                </a>
+              </p>
+             
+              <div class="price">
+                <p>$<%= product.price %></p>
+                <% if (isAuthenticated) { %>
+                  <%- include('../includes/add-to-cart.ejs', { product: product }) %>
+                <% } else { %>
+                  <i class="fa-solid fa-cart-plus"></i>
+                <% } %>
+              </div>
+            </div>
+          <% } %>
+        </div>
+        <div class="btns">
+          <%- include('../includes/pagination.ejs', {
+            currentPage: currentPage,
+            nextPage: nextPage,
+            previousPage: previousPage,
+            lastPage: lastPage,
+            hasNextPage: hasNextPage,
+            hasPreviousPage: hasPreviousPage
+          }) %>
+    
+        </div>
+      </div>
+    <% } else { %>
+      <h1>No Products Found!</h1>
+    <% } %>
+  </main>
+
+  <%- include('../includes/end.ejs') %>
+</body>
+</html>

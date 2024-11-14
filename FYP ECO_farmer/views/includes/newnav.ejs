@@ -1,0 +1,176 @@
+<style>
+    .main{
+        display: flex;
+        justify-content: center;
+    }  
+    .swiper {
+      width: 90%;
+      height: 60vh;
+      border-radius: 1rem;
+        background-color: green;
+        margin-top: 1rem;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+    }
+    .swiper-pagination-bullet {
+      width: 8px; /* Custom size */
+      height: 8px; /* Custom size */
+      background: white; /* Custom color */
+      opacity: 1; /* Ensures the bullets are fully opaque */
+    }
+
+    .swiper-pagination-bullet-active {
+      background: green; /* Custom color for active bullet */
+    }
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: green; /* Custom color */
+      width: 40px; /* Custom size */
+      height: 40px; /* Custom size */
+      border-radius: 50%; /* Make the buttons round */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      font-size: 20px; /* Custom icon size */
+      font-weight: 900;
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+      background-color: rgba(189, 189, 189, 0.8); /* Darker background on hover */
+    }
+    </style>
+<header>
+    <div class="logo">
+        <div class="hamburger-menu">
+            <span><i class="fas fa-bars"></i></span>
+          </div>
+        <h1>Eco-Farmer Hub</h1>
+    </div>
+    <nav>
+        <ul>
+            <li> 
+                <a href="/">Products</a>
+            </li>
+            <li> 
+                <a href="/products">Fruits</a>
+            </li>
+            <li>
+                 <a href="/vegetable">Vegetables</a>
+                </li>
+            <li class="main-header__item dropdown">
+                <a class="dropdown-toggle <%= (path === '/farm-tours' || path === '/courses') ? 'active' : '' %>" href="#" id="farmDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Avtivites
+                </a>
+                <div class="dropdown-menu" aria-labelledby="farmDropdown">
+                  <a class="dropdown-item <%= path === '/farm-tours' ? 'active' : '' %>" href="/tours">Farm Tours</a>
+                  <a class="dropdown-item <%= path === '/courses' ? 'active' : '' %>" href="/course">Courses</a>
+                </div>
+              </li>
+            <% if(isAuthenticated){ %>
+            <li> 
+                <a href="/cart">cart</a>
+            </li>
+            <li class="main-header__item dropdown">
+              <a class="dropdown-toggle<%= path.startsWith('/orders') ? 'active' : '' %>" href="#">Orders</a>
+              <ul class="dropdown-content">
+                  <li><a class="<%= path === '/orders/food' ? 'active' : '' %>" href="/orders">Food Order</a></li>
+                  <li><a class="<%= path === '/orders/bookings' ? 'active' : '' %>" href="/orders/bookings">Bookings</a></li>
+                  <li><a class="<%= path === '/orders/enrollment' ? 'active' : '' %>" href="/orders/enrollment">Enrollment</a></li>
+              </ul>
+          </li>
+          
+             <% if(role === 'farmer') { %>
+            
+             <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle">Farmer Dhasboard
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="mt"><a href="/admin/add-product">AddProduct</a></li>
+                  <li class="mt"><a href="/admin/product">Admin Products</a></li>
+                  <li class="mt"><a href="/admin/Tour">Admin Tours</a></li>
+                  <li class="mt"><a href="/admin/Cours">Admincourse</a></li>
+                  <li class="mt"><a href="/admin/tours">Add tours</a></li>
+                  <li class="mt"><a href="/admin/orders">manage orders</a></li>
+                  <li class="mt"><a href="/admin/managebooking">manage Booking</a></li>
+                  <li class="mt"><a href="/admin/manageenrollments">manage Enrollments</a></li>
+                </ul>
+              </li>
+              <% } %>
+              <% } %>
+              <% if(!isAuthenticated){ %>
+              <ul class="">
+                <div class="logs">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">signup</a></li>
+                </div>
+                <% } else { %>
+                    <li>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                        <button type="submit">Logout</button>
+                    </form>
+                    </li>
+                    <% } %>
+              </ul>
+         
+        </ul>
+    </nav>
+</header>
+<!-- Swiper -->
+ <div class="main">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img src="https://apt.farmtohome.com.pk/banners/Fruits%20bannar%20(1).webp" alt="">
+          </div>
+          <div class="swiper-slide">
+            <img src="https://apt.farmtohome.com.pk/banners/Rice%20Web%20Banner%20-%20FTH.webp" alt="">
+          </div>
+          <div class="swiper-slide">Slide 3</div>
+          <div class="swiper-slide">Slide 4</div>
+          <div class="swiper-slide">Slide 5</div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+ </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      spaceBetween: 30,
+      centeredSlides: true,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  </script>
