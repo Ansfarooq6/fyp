@@ -1,4 +1,4 @@
-nnnnnnnn
+
 
 const User = require('../models/user');
 const Farmer = require ('../models/farmer');
