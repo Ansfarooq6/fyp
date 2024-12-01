@@ -65,7 +65,7 @@ exports.getProduct = (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
   const page = parseInt(req.query.page, 10) || 1;
-  const item_per_page = 12;
+  const item_per_page = 5;
   let totalItems;
 
   Product.find()
@@ -219,7 +219,7 @@ exports.postBooking = (req, res, next) => {
             window.location.href = '/login';
         </script>
     `);
-}
+  }
   const { date, slot, participants } = req.body;
   const userId = req.user._id;
   console.log(userId);
@@ -373,7 +373,7 @@ exports.enrollCourse = async (req, res, next) => {
               window.location.href = '/login';
           </script>
       `);
-  }
+    }
     const courseId = req.params.coruseId;
     console.log(courseId, "debug");
     const course = await Course.findById(courseId);

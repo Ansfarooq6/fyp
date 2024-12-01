@@ -30,8 +30,11 @@
                   <i class="fa-solid fa-cart-plus"></i>
                 <% } %>
               </div>
+              <a href="/products/<%= product._id %>" class="btn">Details</a>
             </div>
+            
           <% } %>
+         
         </div>
         <div class="btns">
           <%- include('../includes/pagination.ejs', {
