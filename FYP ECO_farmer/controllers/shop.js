@@ -247,10 +247,7 @@ exports.postBooking = (req, res, next) => {
       return booking.save();
     })
     .then(savedBooking => {
-      res.status(201).json({
-        message: 'bhai ap API retuen kar rahy ho page render karna hai',
-        booking: savedBooking
-      });
+      res.redirect('/orders/bookings')
     })
     .catch(err => {
       if (!err.statusCode) {
