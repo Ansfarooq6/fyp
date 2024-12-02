@@ -52,9 +52,9 @@ router.post('/edit-product',[
     .trim(),
 ], isAuth,adminController.postEditProduct);
 
-router.delete('/product/:productId', isAuth,adminController.postDeleteProduct);
+//router.delete('/product/:productId', isAuth,adminController.postDeleteProduct);
 
-router.get('/courses',adminController.getCoruse);
+router.post('/product/:productId', isAuth,adminController.postDeleteProduct);
 
 router.post('/add-course', isAuth, [
     body('courseName').trim().not().isEmpty(),

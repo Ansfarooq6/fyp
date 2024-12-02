@@ -170,12 +170,15 @@ exports.postDeleteProduct = (req, res, next) => {
     filehelper.deletefile(product.imageUrl);
     return Product.findByIdAndRemove(prodId);
   }).then(() => {
-    res.render('admin/products', {
-      pageTitle: 'Admin Products',
-      path: '/admin/products',
-      isAuthenticated: req.session.isLoggedIn,
-      role: req.session.user.role
-    })
+  
+
+    // Send a response with an alert and redirect script
+    res.status(200).send(`
+      <script>
+        alert('Product deleted successfully.');
+        window.location.href = '/admin/products';
+      </script>
+    `);
     console.log('DESTROYED PRODUCT');
     res.status(200).json({ message: "Deleted successfully" });
   })
@@ -183,6 +186,38 @@ exports.postDeleteProduct = (req, res, next) => {
       res.status(500).json({ message: 'Deleting product failed' }); // Pass error to next middleware
     });
 };
+
+exports.postDeleteProductss = async (req, res, next) => {
+  try {
+    const prodId = req.params.productId;
+    const product = await Product.findById(prodId);
+
+    if (!product) {
+      return next(new Error('Product not found'));
+    }
+
+    // Delete the file associated with the product
+    filehelper.deletefile(product.imageUrl);
+
+    // Remove the product from the database
+    await Product.findByIdAndRemove(prodId);
+
+    console.log('Product deleted successfully.');
+
+    // Render a response with an alert and redirect script
+    res.status(200).send(`
+      <script>
+        alert('Product deleted successfully.');
+        window.location.href = '/admin/products';
+      </script>
+    `);
+  } catch (err) {
+    console.error(err); // Log error for debugging
+    res.status(500).json({ message: 'Deleting product failed' });
+  }
+};
+
+
 
 exports.getCoruse = (req, res, next) => {
 
