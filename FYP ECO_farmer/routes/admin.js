@@ -56,6 +56,8 @@ router.post('/edit-product',[
 
 router.post('/product/:productId', isAuth,adminController.postDeleteProduct);
 
+router.get('/Course' , isAuth , adminController.getCoruse);
+
 router.post('/add-course', isAuth, [
     body('courseName').trim().not().isEmpty(),
     body('availableSlots').isNumeric(),

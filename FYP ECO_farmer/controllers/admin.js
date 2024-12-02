@@ -170,7 +170,7 @@ exports.postDeleteProduct = (req, res, next) => {
     filehelper.deletefile(product.imageUrl);
     return Product.findByIdAndRemove(prodId);
   }).then(() => {
-  
+
 
     // Send a response with an alert and redirect script
     res.status(200).send(`
