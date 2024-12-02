@@ -23,13 +23,13 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
- 
+
   const title = req.body.title;
   const image = req.file;
   const price = req.body.price;
   const category = req.body.category;
   const description = req.body.description;
-  
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).render('admin/edit-product', {
@@ -147,18 +147,18 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find({ userId: req.session.user._id })
-      .then(products => {
-        res.render('admin/products', {
-          prods: products,
-          pageTitle: 'Admin Products',
-          path: '/admin/products',
-          isAuthenticated: req.session.isLoggedIn,
-          role: req.session.user.role  // Pass the role to the view
-        });
-      })
-      .catch(err => {
-        next(err); // Pass error to next middleware
+    .then(products => {
+      res.render('admin/products', {
+        prods: products,
+        pageTitle: 'Admin Products',
+        path: '/admin/products',
+        isAuthenticated: req.session.isLoggedIn,
+        role: req.session.user.role  // Pass the role to the view
       });
+    })
+    .catch(err => {
+      next(err); // Pass error to next middleware
+    });
 };
 
 exports.postDeleteProduct = (req, res, next) => {
@@ -170,7 +170,7 @@ exports.postDeleteProduct = (req, res, next) => {
     filehelper.deletefile(product.imageUrl);
     return Product.findByIdAndRemove(prodId);
   }).then(() => {
-    res.render('admin/product',{
+    res.render('admin/products', {
       pageTitle: 'Admin Products',
       path: '/admin/products',
       isAuthenticated: req.session.isLoggedIn,
@@ -182,17 +182,17 @@ exports.postDeleteProduct = (req, res, next) => {
     .catch(err => {
       res.status(500).json({ message: 'Deleting product failed' }); // Pass error to next middleware
     });
-}; 
+};
 
-exports.getCoruse = (req ,res ,next) =>{
-  
-  res.render('admin/course',{
+exports.getCoruse = (req, res, next) => {
+
+  res.render('admin/course', {
     pageTitle: 'add Course',
-    path :'/course',
-    validatonErrors : [],
+    path: '/course',
+    validatonErrors: [],
     isAuthenticated: req.session.isLoggedIn,
   })
-  
+
 }
 exports.postAddCourse = async (req, res, next) => {
   const errors = validationResult(req);
@@ -238,42 +238,42 @@ exports.postAddCourse = async (req, res, next) => {
 };
 
 exports.getAllEnrollments = async (req, res, next) => {
-    try {
-        const enrollments = await Enroll.find()
-            .populate('courseId')
-            .populate('userId')
-            .exec();
+  try {
+    const enrollments = await Enroll.find()
+      .populate('courseId')
+      .populate('userId')
+      .exec();
 
-        res.render('admin/manage-enroll', {
-            enrollments: enrollments,
-            pageTitle: 'All Enrollments',
-            path: '/admin/enrollments',
-            isAuthenticated: req.session.isLoggedIn,
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Internal Server Error');
-    }
+    res.render('admin/manage-enroll', {
+      enrollments: enrollments,
+      pageTitle: 'All Enrollments',
+      path: '/admin/enrollments',
+      isAuthenticated: req.session.isLoggedIn,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 
 exports.getTour = (req, res, next) => {
   res.render('admin/addtour', {
-      pageTitle: 'Add Tour',
-      path: '/tour',
-      editing : false,
-      errorMessage: null,
-      oldInput: {
-          title: '',
-          description: '',
-          highlights: '',
-          location: '',
-          duration: '',
-          maxParticipants: '',
-          price: '',
-          slots: ''
-      },
-      isAuthenticated: req.session.isLoggedIn
+    pageTitle: 'Add Tour',
+    path: '/tour',
+    editing: false,
+    errorMessage: null,
+    oldInput: {
+      title: '',
+      description: '',
+      highlights: '',
+      location: '',
+      duration: '',
+      maxParticipants: '',
+      price: '',
+      slots: ''
+    },
+    isAuthenticated: req.session.isLoggedIn
   });
 };
 
@@ -282,56 +282,56 @@ exports.getTour = (req, res, next) => {
 exports.postAddFarmTour = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-      console.log(errors.array());
-      return res.status(422).render('admin/addtour', {
-          pageTitle: 'Add Farm Tour',
-          path: '/admin/add-farm-tour',
-          errorMessage: errors.array(),
-          oldInput: {
-              title: req.body.title,
-              description: req.body.description,
-              highlights: req.body.highlights,
-              location: req.body.location,
-              duration: req.body.duration,
-              maxParticipants: req.body.maxParticipants,
-              price: req.body.price,
-              slots: req.body.slots
-          }
-      });
-  }
-  
-  const {
-      title,
-      description,
-      highlights,
-      date,
-      location,
-      duration,
-      maxParticipants,
-      price,
-      slots
-  } = req.body;
-  
-  try {
-      const farmTour = new Tour({
-          title: title,
-          description: description,
-          highlights: highlights.split(',').map(item => item.trim()),
-          date : date,
-          location: location,
-          duration: duration,
-          maxParticipants: maxParticipants,
-          price: price,
-          slots: slots.split(',').map(slot => slot.trim()),
-          userId: req.user._id
-      });
-      await farmTour.save();
-      res.redirect('/tours');
-  } catch (err) {
-      if (!err.statusCode) {
-          err.statusCode = 500;
+    console.log(errors.array());
+    return res.status(422).render('admin/addtour', {
+      pageTitle: 'Add Farm Tour',
+      path: '/admin/add-farm-tour',
+      errorMessage: errors.array(),
+      oldInput: {
+        title: req.body.title,
+        description: req.body.description,
+        highlights: req.body.highlights,
+        location: req.body.location,
+        duration: req.body.duration,
+        maxParticipants: req.body.maxParticipants,
+        price: req.body.price,
+        slots: req.body.slots
       }
-      next(err);
+    });
+  }
+
+  const {
+    title,
+    description,
+    highlights,
+    date,
+    location,
+    duration,
+    maxParticipants,
+    price,
+    slots
+  } = req.body;
+
+  try {
+    const farmTour = new Tour({
+      title: title,
+      description: description,
+      highlights: highlights.split(',').map(item => item.trim()),
+      date: date,
+      location: location,
+      duration: duration,
+      maxParticipants: maxParticipants,
+      price: price,
+      slots: slots.split(',').map(slot => slot.trim()),
+      userId: req.user._id
+    });
+    await farmTour.save();
+    res.redirect('/tours');
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
   }
 };
 
@@ -339,9 +339,9 @@ exports.postAddFarmTour = async (req, res, next) => {
 
 exports.getFarmerOrders = async (req, res, next) => {
   try {
-    const farmerId = req.user._id; 
+    const farmerId = req.user._id;
 
-   
+
     const orders = await Order.find({ 'products.product.userId': farmerId })
       .populate('user.userId')
       .exec();
@@ -350,8 +350,8 @@ exports.getFarmerOrders = async (req, res, next) => {
       pageTitle: 'Farmer Orders',
       path: '/admin/farmer-orders',
       orders: orders,
-      path : '/farmer order',
-      isAuthenticated: req.session.isLoggedIn 
+      path: '/farmer order',
+      isAuthenticated: req.session.isLoggedIn
     });
   } catch (err) {
     console.error('Error fetching farmer orders:', err);
@@ -362,10 +362,10 @@ exports.getFarmerOrders = async (req, res, next) => {
 exports.getFarmerBookings = async (req, res, next) => {
   try {
     const farmerId = req.user._id;
-    
+
     const farmerTours = await Tour.find({ userId: farmerId }).select('_id');
     const farmerTourIds = farmerTours.map(tour => tour._id);
-    
+
     const bookings = await Booking.find({ tour: { $in: farmerTourIds } })
       .populate('user', 'email username customerDetails')
       .populate('tour', 'title')
@@ -389,7 +389,7 @@ exports.getFarmerBookings = async (req, res, next) => {
 
 exports.getAdminTours = async (req, res, next) => {
   try {
-    const adminId = req.user._id; 
+    const adminId = req.user._id;
     const tours = await Tour.find({ userId: adminId });
 
     res.render('admin/admintour', {
@@ -424,7 +424,7 @@ exports.getEditTour = (req, res, next) => {
         pageTitle: 'Edit tour',
         path: '/admin/edit-tour',
         editing: editMode,
-        csrfToken : csrfToken,
+        csrfToken: csrfToken,
         tour: tour,
         errorMessage: null,
         validationErrors: [],
@@ -440,77 +440,77 @@ exports.getEditTour = (req, res, next) => {
 
 
 exports.postEditTour = async (req, res, next) => {
-    const tourId = req.body.tourId;
-    const updatedTitle = req.body.title;
-    const updatedDescription = req.body.description;
-    const updatedHighlights = req.body.highlights;
-    const updatedLocation = req.body.location;
-    const updatedDuration = req.body.duration;
-    const updatedMaxParticipants = req.body.maxParticipants;
-    const updatedPrice = req.body.price;
-    const updatedSlots = req.body.slots;
+  const tourId = req.body.tourId;
+  const updatedTitle = req.body.title;
+  const updatedDescription = req.body.description;
+  const updatedHighlights = req.body.highlights;
+  const updatedLocation = req.body.location;
+  const updatedDuration = req.body.duration;
+  const updatedMaxParticipants = req.body.maxParticipants;
+  const updatedPrice = req.body.price;
+  const updatedSlots = req.body.slots;
 
 
-    try {
-        const tour = await Tour.findById(tourId);
+  try {
+    const tour = await Tour.findById(tourId);
 
-        if (!tour) {
-            const error = new Error('Tour not found.');
-            error.statusCode = 404;
-            throw error;
-        }
-
-        // Update tour fields
-        tour.title = updatedTitle;
-        tour.description = updatedDescription;
-        tour.highlights = updatedHighlights.split(',').map(highlight => highlight.trim());
-        tour.location = updatedLocation;
-        tour.duration = updatedDuration;
-        tour.maxParticipants = updatedMaxParticipants;
-        tour.price = updatedPrice;
-        tour.slots = updatedSlots.split(',').map(slot => slot.trim());
-
-        // Save updated tour
-        const result = await tour.save();
-
-        res.redirect('/admin/Tour');
-    } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+    if (!tour) {
+      const error = new Error('Tour not found.');
+      error.statusCode = 404;
+      throw error;
     }
+
+    // Update tour fields
+    tour.title = updatedTitle;
+    tour.description = updatedDescription;
+    tour.highlights = updatedHighlights.split(',').map(highlight => highlight.trim());
+    tour.location = updatedLocation;
+    tour.duration = updatedDuration;
+    tour.maxParticipants = updatedMaxParticipants;
+    tour.price = updatedPrice;
+    tour.slots = updatedSlots.split(',').map(slot => slot.trim());
+
+    // Save updated tour
+    const result = await tour.save();
+
+    res.redirect('/admin/Tour');
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 };
 
 
 exports.postDeleteTour = async (req, res, next) => {
-    const tourId = req.body.tourId;
-    const csrfToken = req.csrfToken();
+  const tourId = req.body.tourId;
+  const csrfToken = req.csrfToken();
 
-    try {
-        const tour = await Tour.findById(tourId);
+  try {
+    const tour = await Tour.findById(tourId);
 
-        if (!tour) {
-            const error = new Error('Tour not found.');
-            error.statusCode = 404;
-            throw error;
-        }
-
-        if (tour.userId.toString() !== req.user._id.toString()) {
-            const error = new Error('Not authorized to delete this tour.');
-            error.statusCode = 403;
-            throw error;
-        }
-
-        // Delete the tour
-        await Tour.findByIdAndRemove(tourId);
-
-        res.redirect('/admin/Tour');
-    } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+    if (!tour) {
+      const error = new Error('Tour not found.');
+      error.statusCode = 404;
+      throw error;
     }
+
+    if (tour.userId.toString() !== req.user._id.toString()) {
+      const error = new Error('Not authorized to delete this tour.');
+      error.statusCode = 403;
+      throw error;
+    }
+
+    // Delete the tour
+    await Tour.findByIdAndRemove(tourId);
+
+    res.redirect('/admin/Tour');
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 };
 
