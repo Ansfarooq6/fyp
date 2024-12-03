@@ -67,6 +67,50 @@ router.post('/add-course', isAuth, [
     body('courseFee').isNumeric()
   ], adminController.postAddCourse);
 
+router.get('/edit-course/:courseId', adminController.getEditCourse)
+
+router.post(
+    '/edit-course',
+    isAuth,
+    [
+      body('courseName')
+        .trim()
+        .notEmpty()
+        .withMessage('Course name must not be empty.'),
+      body('availableSlots')
+        .isInt({ min: 1 })
+        .withMessage('Available slots must be a number greater than 0.'),
+      body('availableDays')
+        .trim()
+        .notEmpty()
+        .withMessage('Available days must not be empty.'),
+      body('mode')
+        .isIn(['online', 'physical'])
+        .withMessage('Mode must be either "online" or "physical".'),
+      body('courseDuration')
+        .trim()
+        .notEmpty()
+        .withMessage('Course duration must not be empty.'),
+      body('courseFee')
+        .isFloat({ min: 0 })
+        .withMessage('Course fee must be a positive number.'),
+      body('lastDateToApply')
+        .isISO8601()
+        .toDate()
+        .withMessage('Last date to apply must be a valid date.'),
+      body('courseDescription')
+        .trim()
+        .notEmpty()
+        .withMessage('Course description must not be empty.')
+    ],
+    adminController.postEditCourse
+  );
+
+router.get('/adminCoruse', adminController.getAdminCourses)
+
+router.post('/edit-course/:courseId', adminController.postEditCourse)
+  
+
 router.get('/addtours',adminController.getTour);
 
 router.post('/addtours',adminController.postAddFarmTour);

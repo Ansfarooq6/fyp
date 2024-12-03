@@ -1,0 +1,52 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/course.css">
+<link rel="stylesheet" href="/css/navbar.css">
+</head>
+<body>
+    <%- include('../includes/mocknav.ejs') %>
+
+    <div class="outer">
+        <h1>Manage Your Courses</h1>
+        <p>Here you can edit or delete your created courses.</p>
+    </div>
+
+    <main class="main">
+        <% if (courses.length === 0) { %>
+            <p>You haven't created any courses yet.</p>
+        <% } else { %>
+            <% courses.forEach(course => { %>
+                <div class="course-item"> <!-- Added course-item wrapper -->
+                    <div class="image-container">
+                        <div class="image">
+                            <img src="<%= course.imageUrl %>" alt="<%= course.title %>">
+                        </div>
+                    </div>
+                    <div class="course-container">
+                        <h2 class="course-title"><%= course.courseName %></h2>
+                        <div class="course-details">
+                            <p><strong>Available Days:</strong> <%= course.availableDays.join(', ') %></p>
+                            <p><strong>Available Slots:</strong> <%= course.availableSlots %></p>
+                            <p><strong>Mode:</strong> <%= course.mode %></p>
+                            <p><strong>Course Duration:</strong> <%= course.courseDuration %> months</p>
+                            <p><strong>Course Fee:</strong> <%= course.courseFee %></p>
+                            <p><strong>Last Date to Apply:</strong> <%= course.lastDateToApply ? course.lastDateToApply.toISOString().split('T')[0] : 'N/A' %></p>
+                            <p><strong>Description:</strong> <%= course.courseDescription %></p>
+                        </div>
+                        <div class="action-buttons">
+                            <a class="btn edit" href="/admin/edit-course/<%= course._id %>?edit=true">Edit</a>
+                            <form action="/delete-course" method="POST" class="delete-form">
+                                <input type="hidden" name="courseId" value="<%= course._id %>">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <button type="submit" class="btn delete">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+    </main>
+
+    <hr>
+    <%- include('../includes/end.ejs') %>
+</body>
+</html>

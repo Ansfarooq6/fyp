@@ -217,18 +217,28 @@ exports.postDeleteProductss = async (req, res, next) => {
   }
 };
 
-
-
 exports.getCoruse = (req, res, next) => {
-
   res.render('admin/course', {
-    pageTitle: 'add Course',
+    pageTitle: 'Add Course',
     path: '/course',
-    validatonErrors: [],
-    isAuthenticated: req.session.isLoggedIn,
-  })
+    editing: false, // Not editing, creating a new course
+    errorMessage: null, // No error messages initially
+    validationErrors: [], // No validation errors initially
+    oldInput: { // Empty input fields for a new course
+      courseName: '',
+      availableSlots: '',
+      availableDays: '',
+      mode: '',
+      courseDuration: '',
+      courseFee: '',
+      lastDateToApply: '',
+      courseDescription: ''
+    },
+    csrfToken: req.csrfToken(), // CSRF token for secure form submission
+    isAuthenticated: req.session.isLoggedIn // Session authentication
+  });
+};
 
-}
 exports.postAddCourse = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -237,7 +247,7 @@ exports.postAddCourse = async (req, res, next) => {
     return res.status(422).json({ errors: errors.array() }); // Adjust as needed
   }
 
-  const {
+  const { 
     courseName,
     availableSlots,
     availableDays,
@@ -262,7 +272,14 @@ exports.postAddCourse = async (req, res, next) => {
     });
 
     await course.save();
-    res.status(201).json({ message: 'Course added successfully', course: course });
+    const userId = await req.user._id;
+    const coruse = await Course.find({ userId: userId });
+    res.status(201).render('admin/adminCoruse',{
+      pageTitle: 'Course',
+      path: '/admin/course',
+      courses: coruse
+
+    })
   } catch (err) {
     console.error('Error saving course:', err);
     if (!err.statusCode) {
@@ -455,7 +472,7 @@ exports.getEditTour = (req, res, next) => {
       if (!tour) {
         return res.redirect('/');
       }
-      res.render('admin/adminTour', {
+      res.render('admin/addtour', {
         pageTitle: 'Edit tour',
         path: '/admin/edit-tour',
         editing: editMode,
@@ -549,3 +566,130 @@ exports.postDeleteTour = async (req, res, next) => {
   }
 };
 
+exports.getEditCourse = async (req, res, next) => {
+  const courseId = req.params.courseId;
+  const editing = req.query.edit === 'true';
+
+  if (!editing) {
+    console.log("ssss")
+    return res.redirect('/');
+  }
+
+  try {
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+      return res.redirect('/');
+    }
+
+    res.render('admin/course', {
+      pageTitle: 'Edit Course',
+      path: '/admin/edit-course',
+      editing: true, // Editing mode enabled
+      course: course, // Populate form with course data
+      errorMessage: null, // No errors initially
+      validationErrors: [], // No validation errors initially
+      oldInput: { // Set to match the existing course data
+        courseName: course.courseName,
+        availableSlots: course.availableSlots,
+        availableDays: course.availableDays.join(', '), // Join array for display
+        mode: course.mode,
+        courseDuration: course.courseDuration,
+        courseFee: course.courseFee,
+        lastDateToApply: course.lastDateToApply.toISOString().split('T')[0],
+        courseDescription: course.courseDescription
+      },
+      csrfToken: req.csrfToken(), // CSRF token for secure form submission
+      isAuthenticated: req.session.isLoggedIn // Session authentication
+    });
+  } catch (error) {
+    console.error(error);
+    res.redirect('/500');
+  }
+};
+
+
+
+exports.postEditCourse = async (req, res, next) => {
+  const {
+    courseId,
+    courseName,
+    availableSlots,
+    availableDays,
+    mode,
+    courseDuration,
+    courseFee,
+    lastDateToApply,
+    courseDescription
+  } = req.body;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render('admin/course', {
+      pageTitle: 'Edit Course',
+      path: '/admin/edit-course',
+      editing: true,
+      course: {
+        _id: courseId,
+        courseName,
+        availableSlots,
+        availableDays,
+        mode,
+        courseDuration,
+        courseFee,
+        lastDateToApply,
+        courseDescription
+      },
+      errorMessage: errors.array(),
+      validationErrors: errors.array(),
+      csrfToken: req.csrfToken(),
+      isAuthenticated: req.session.isLoggedIn
+    });
+  }
+
+  try {
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+      return res.redirect('/admin/adminCoruse');
+    }
+
+    course.courseName = courseName;
+    course.availableSlots = availableSlots;
+    course.availableDays = availableDays.split(',').map(day => day.trim());
+    course.mode = mode;
+    course.courseDuration = courseDuration;
+    course.courseFee = courseFee;
+    course.lastDateToApply = new Date(lastDateToApply);
+    course.courseDescription = courseDescription;
+
+    await course.save();
+
+    res.redirect('/admin/adminCoruse');
+  } catch (error) {
+    console.error(error);
+    res.redirect('/500');
+  }
+};
+
+
+exports.getAdminCourses = async (req, res, next) => {
+  try {
+    const userId = await req.user._id;
+    const coruse = await Course.find({ userId: userId });
+
+    res.render('admin/adminCoruse', {
+      pageTitle: 'Your Courses',
+      path: '/admin/courses',
+      courses: coruse,
+      isAuthenticated: req.session.isLoggedIn,
+      errorMessage: null
+    });
+  } catch (err) {
+    console.error('Error fetching admin courses:', err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};
