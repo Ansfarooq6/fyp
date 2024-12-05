@@ -106,6 +106,8 @@ router.post(
     adminController.postEditCourse
   );
 
+router.post('/delete-course', adminController.postDeleteCourse)
+
 router.get('/adminCoruse', adminController.getAdminCourses)
 
 router.post('/edit-course/:courseId', adminController.postEditCourse)

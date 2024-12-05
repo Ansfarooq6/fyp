@@ -693,3 +693,26 @@ exports.getAdminCourses = async (req, res, next) => {
     return next(error);
   }
 };
+
+
+
+exports.postDeleteCourse = async (req, res, next) => {
+  try {
+    const courseId = req.body.courseId; // Assuming courseId is passed in the request body
+
+    // Find and delete the course
+    const course = await Course.findByIdAndRemove(courseId);
+
+    if (!course) {
+      req.flash('error', 'Course not found.'); // Optionally set a flash message
+      return res.redirect('/admin/courses');
+    }
+
+    req.flash('success', 'Course deleted successfully.'); // Optionally set a success message
+    res.redirect('/admin/adminCoruse'); // Redirect to the admin courses page
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin/courses'); // Fallback redirection in case of an error
+  }
+
+};
