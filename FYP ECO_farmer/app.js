@@ -15,7 +15,7 @@ const MongoDbStore = require('connect-mongodb-session')(session);
 
 const CSRFprotection = CSRF();
 
-const MONGODB_url = 'mongodb+srv://hamza123:hamza123@cluster0.el7nk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const MONGODB_url = 'mongodb+srv://hamza123:hamza123@cluster0.el7nk.mongodb.net/FYP?retryWrites=true&w=majority&appName=Cluster0'
 
 const store = new MongoDbStore({
   uri: MONGODB_url,
@@ -119,8 +119,8 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(
     MONGODB_url,{
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+        useNewUrlParser: true,
+  useUnifiedTopology: true,
     }
   )
   .then(result => {
