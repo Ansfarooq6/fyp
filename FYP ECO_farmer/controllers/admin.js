@@ -161,62 +161,31 @@ exports.getProducts = (req, res, next) => {
     });
 };
 
-exports.postDeleteProduct = (req, res, next) => {
-  const prodId = req.params.productId;
-  Product.findById(prodId).then(product => {
-    if (!product) {
-      return next(new Error('Product not found'));
-    }
-    filehelper.deletefile(product.imageUrl);
-    return Product.findByIdAndRemove(prodId);
-  }).then(() => {
 
-
-    // Send a response with an alert and redirect script
-    res.status(200).send(`
-      <script>
-        alert('Product deleted successfully.');
-        window.location.href = '/admin/products';
-      </script>
-    `);
-    console.log('DESTROYED PRODUCT');
-    res.status(200).json({ message: "Deleted successfully" });
-  })
-    .catch(err => {
-      res.status(500).json({ message: 'Deleting product failed' }); // Pass error to next middleware
-    });
-};
-
-exports.postDeleteProductss = async (req, res, next) => {
+exports.postDeleteProduct = async (req, res, next) => {
   try {
-    const prodId = req.params.productId;
-    const product = await Product.findById(prodId);
+    const prodId = req.body.productId; // Assuming productId is passed in the request body
 
+    const product = await Product.findById(prodId);
     if (!product) {
-      return next(new Error('Product not found'));
+      req.flash('error', 'Product not found.'); // Optional flash message
+      return res.redirect('/admin/products');
     }
 
-    // Delete the file associated with the product
+    // Delete associated file
     filehelper.deletefile(product.imageUrl);
 
-    // Remove the product from the database
+    // Delete product from database
     await Product.findByIdAndRemove(prodId);
 
-    console.log('Product deleted successfully.');
-
-    // Render a response with an alert and redirect script
-    res.status(200).send(`
-      <script>
-        alert('Product deleted successfully.');
-        window.location.href = '/admin/products';
-      </script>
-    `);
+    req.flash('success', 'Product deleted successfully.'); // Optional flash message
+    return res.redirect('/admin/products'); // Redirect after successful deletion
   } catch (err) {
-    console.error(err); // Log error for debugging
-    res.status(500).json({ message: 'Deleting product failed' });
+    console.error(err);
+    req.flash('error', 'Deleting product failed.'); // Optional flash message
+    return res.redirect('/admin/products');
   }
 };
-
 exports.getCoruse = (req, res, next) => {
   res.render('admin/course', {
     pageTitle: 'Add Course',
@@ -247,7 +216,7 @@ exports.postAddCourse = async (req, res, next) => {
     return res.status(422).json({ errors: errors.array() }); // Adjust as needed
   }
 
-  const { 
+  const {
     courseName,
     availableSlots,
     availableDays,
@@ -274,7 +243,7 @@ exports.postAddCourse = async (req, res, next) => {
     await course.save();
     const userId = await req.user._id;
     const coruse = await Course.find({ userId: userId });
-    res.status(201).render('admin/adminCoruse',{
+    res.status(201).render('admin/adminCoruse', {
       pageTitle: 'Course',
       path: '/admin/course',
       courses: coruse

@@ -54,6 +54,8 @@ router.post('/edit-product',[
 
 //router.delete('/product/:productId', isAuth,adminController.postDeleteProduct);
 
+router.post('/delete-product', isAuth , adminController.postDeleteProduct)
+
 router.post('/product/:productId', isAuth,adminController.postDeleteProduct);
 
 router.get('/Course' , isAuth , adminController.getCoruse);
