@@ -15,7 +15,7 @@ const MongoDbStore = require('connect-mongodb-session')(session);
 
 const CSRFprotection = CSRF();
 
-const MONGODB_url = 'mongodb+srv://ansfarooq:farooqanas5522@cluster0.cexffl3.mongodb.net/shop?retryWrites=true&w=majority&appName=Cluster0'
+const MONGODB_url = 'mongodb+srv://hamza123:hamza123@cluster0.el7nk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
 const store = new MongoDbStore({
   uri: MONGODB_url,
