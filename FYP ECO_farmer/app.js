@@ -15,6 +15,10 @@ const MongoDbStore = require('connect-mongodb-session')(session);
 
 const CSRFprotection = CSRF();
 
+////////////////
+const cors = require('cors');
+const AuthAPi = require('./routes/AuthAPI');
+
 const MONGODB_url = 'mongodb+srv://hamza123:hamza123@cluster0.el7nk.mongodb.net/FYP?retryWrites=true&w=majority&appName=Cluster0'
 
 const store = new MongoDbStore({
@@ -46,6 +50,19 @@ const fliterfile = (req, file, cb) => {
 }
 
 const app = express();
+app.use(cors());
+// CORS Middleware
+app.use((req, res, next) => {
+  // Allow any origin (adjust to specific domain in production for security)
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+      return res.status(204).end();
+  }
+
+  next();
+});
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -107,6 +124,9 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(auth);
 app.use('/500', errorController.get500);
+
+////////////////////
+app.use(AuthAPi);
 
 app.use(errorController.get404);
 
