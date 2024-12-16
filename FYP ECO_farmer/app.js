@@ -126,7 +126,7 @@ app.use(auth);
 app.use('/500', errorController.get500);
 
 ////////////////////
-app.use(AuthAPi);
+app.use(AuthAPi)
 
 app.use(errorController.get404);
 
