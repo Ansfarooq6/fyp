@@ -15,6 +15,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const auth = require('./routes/auth');
 const AuthAPI = require('./routes/AuthAPI');
+const AdminAPI = require('./routes/adminAPI')
 
 const MONGODB_url = 'mongodb+srv://hamza123:hamza123@cluster0.el7nk.mongodb.net/FYP?retryWrites=true&w=majority&appName=Cluster0';
 
@@ -110,6 +111,7 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(auth);
 app.use(AuthAPI);
+app.use(AdminAPI);
 
 // Error handling routes
 app.use('/500', errorController.get500);

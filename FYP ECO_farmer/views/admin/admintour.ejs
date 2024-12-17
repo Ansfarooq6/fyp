@@ -28,7 +28,7 @@
                             <a href="/admin/edit-tour/<%= tour._id %>?edit=true" class="btn">Edit</a>
                             <form action="/admin/delete-tour" method="POST" style="display: inline;">
                                 <input type="hidden" name="tourId" value="<%= tour._id %>">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                   
                                 <button type="submit" class="btn">Delete Tour</button>
                             </form>
                             </div>

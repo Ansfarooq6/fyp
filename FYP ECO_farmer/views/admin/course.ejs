@@ -55,7 +55,7 @@
                 <label for="courseDescription">Course Description</label>
                 <textarea id="courseDescription" name="courseDescription" rows="5" required><%= editing ? course.courseDescription : oldInput.courseDescription %></textarea>
             </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    
             <button class="btn" type="submit"><% if (editing) { %>Update Course<% } else { %>Add Course<% } %></button>
         </form>
     </main>

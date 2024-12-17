@@ -56,7 +56,7 @@
                 <label for="slots">Available Slots (comma-separated)</label>
                 <input type="text" id="slots" name="slots" value="<%= editing ? tour.slots.join(', ') : oldInput.slots %>" required>
             </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            
             <button class="btn" type="submit"><% if (editing) { %>Update Farm Tour<% } else { %>Add Farm Tour<% } %></button>
         </form>
     </main>

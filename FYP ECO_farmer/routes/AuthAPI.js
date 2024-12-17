@@ -4,4 +4,6 @@ const router = express.Router();
 
 router.post('/api/login', authController.posttLogin);
 
+router.post('/api/signup', authController.postSignUp);
+
 module.exports = router
