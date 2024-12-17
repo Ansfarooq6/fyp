@@ -496,7 +496,7 @@ exports.postEditTour = async (req, res, next) => {
 
     res.redirect('/admin/Tour');
   } catch (err) {
-    if (!err.statusCode) {
+    if (!err.statusCode) { 
       err.statusCode = 500;
     }
     next(err);
